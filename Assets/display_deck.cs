@@ -21,6 +21,7 @@ public class display_deck : MonoBehaviour
             card.transform.position = HandDeck.transform.position + new Vector3(howManyAdded * gapBetweenCards, 0, 0);
             card.transform.SetParent(HandDeck);
             sr.sprite = cardSprite;
+            card.name = cardTexture.name;
 
             howManyAdded++;
         }

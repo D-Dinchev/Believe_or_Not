@@ -547,6 +547,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerManager: {fileID: 1717111201}
   HandDeck: {fileID: 114399369}
+  gapBetweenCards: 3
 --- !u!1001 &1544073699
 PrefabInstance:
   m_ObjectHideFlags: 0
