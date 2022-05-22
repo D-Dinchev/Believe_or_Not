@@ -6,25 +6,30 @@ public class match_manager : MonoBehaviour
 {
     [SerializeField] private GameObject mainDeck;
     main_deck _mainDeckEnv;
-    GameObject[] players;
+    GameObject[] bots;
+    [SerializeField] player_manager mainPlayer;
+    private display_deck displayDeck;
     public int HowManyCards;
 
     void Awake()
     {
         _mainDeckEnv = mainDeck.GetComponent<main_deck>();
-        players = GameObject.FindGameObjectsWithTag("Player");
+        bots = GameObject.FindGameObjectsWithTag("Bot");
+        displayDeck = this.GetComponent<display_deck>();
     }
 
     void Start()
     {
         HandOutCardsToPlayers();
+        displayDeck.FitCards();
     }
 
     void HandOutCardsToPlayers()
     {
-        foreach (var player in players)
+        mainPlayer.PlayersDeck = _mainDeckEnv.returnRandomDeck(HowManyCards); // hand out to player
+        foreach (var bot in bots)
         {
-            player.GetComponent<player_manager>().PlayersDeck = _mainDeckEnv.returnRandomDeck(HowManyCards);
+            bot.GetComponent<bot_manager>().PlayersDeck = _mainDeckEnv.returnRandomDeck(HowManyCards); // hand out to bots
         }
     }
 
