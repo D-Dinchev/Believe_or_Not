@@ -4,7 +4,11 @@
 TagManager:
   serializedVersion: 2
   tags:
+  - Undefined
   - Bot
+  - Positions
+  - Card
+  - MoveDeck
   layers:
   - Default
   - TransparentFX
@@ -44,4 +48,10 @@ TagManager:
     locked: 1
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Card
+    uniqueID: 2460179133
+    locked: 0
+  - name: MoveDeckCard
+    uniqueID: 2973237321
     locked: 0
