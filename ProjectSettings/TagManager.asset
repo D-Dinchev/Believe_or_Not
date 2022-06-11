@@ -9,6 +9,8 @@ TagManager:
   - Positions
   - Card
   - MoveDeck
+  - MatchManager
+  - Canvas
   layers:
   - Default
   - TransparentFX

@@ -10,7 +10,7 @@ public class match_manager : MonoBehaviour
 
     GameObject[] bots;
     player_manager mainPlayer;
-    int playerIndexMove;
+    internal int playerIndexMove;
     
 
     display_deck displayDeck;
@@ -19,6 +19,10 @@ public class match_manager : MonoBehaviour
     public GameObject BotPrefab;
     public int howManyBots;
     Transform[] _botsPositions;
+
+    
+
+   internal CardType currentCardType;
 
     void Awake()
     {
@@ -35,6 +39,7 @@ public class match_manager : MonoBehaviour
         HandOutCardsToPlayers();
         displayDeck.FitCards();
         playerIndexMove = 0; //Random.Range(0, howManyBots); // + 1 - + player
+        onCardTypeButtonPressed.CardTypeButtonPressed += endMove;
     }
 
     void Update()
@@ -69,13 +74,14 @@ public class match_manager : MonoBehaviour
 
     void passMoveToPlayer()
     {
+        playerIndexMove = Random.Range(0, howManyBots + 1); // + 1 - + player // CHECK IT
         if (playerIndexMove == 0)
         {
             mainPlayer.isMyTurn = true;
         }
         else
         {
-            bots[playerIndexMove].GetComponent<bot_manager>().isMyTurn = true;
+            bots[playerIndexMove - 1].GetComponent<bot_manager>().isMyTurn = true;
         }
     }
 
@@ -109,7 +115,7 @@ public class match_manager : MonoBehaviour
         for (int i = 0; i < howManyBots; i++)
         {
             bots[i] = Instantiate(BotPrefab, _botsPositions[i].position, Quaternion.identity);
-            bots[i].name = "Bot" + i;
+            bots[i].name = "Bot " + (i + 1);
         }
     }
 
@@ -131,4 +137,19 @@ public class match_manager : MonoBehaviour
         return false;
     }
 
+    internal void endMove() // mb put result in it
+    {
+        if (playerIndexMove == 0)
+        {
+            mainPlayer.isMyTurn = false;
+        }
+        else
+        {
+            bots[playerIndexMove - 1].GetComponent<bot_manager>().isMyTurn = false;
+        }
+
+        if (playerIndexMove + 1 < howManyBots)
+            playerIndexMove++;
+        else playerIndexMove = 0;
+    }
 }

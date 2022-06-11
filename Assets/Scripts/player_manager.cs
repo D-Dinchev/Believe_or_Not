@@ -7,17 +7,18 @@ public class player_manager : MonoBehaviour
 {
     public List<GameObject> PlayersDeck;
     internal bool isMyTurn;
+    internal int howManyCardsThrowed;
 
     void Start()
     {
-        
+        onCardClick.onCardAdded += increaseThrowedCards;
     }
 
     void Update()
     {
         if (isMyTurn)
         {
-           
+            
         }
         
     }
@@ -30,5 +31,10 @@ public class player_manager : MonoBehaviour
     void ongoingMove()
     {
 
+    }
+
+    void increaseThrowedCards()
+    {
+        howManyCardsThrowed++;
     }
 }
