@@ -3,13 +3,19 @@ using System.Collections.Generic;
 using System.Threading;
 using UnityEngine;
 
+public enum MoveType
+{
+    Start,
+    Ongoing
+}
+
 public class match_manager : MonoBehaviour
 {
     [SerializeField] private GameObject mainDeck;
     main_deck _mainDeckEnv;
 
-    GameObject[] bots;
-    player_manager mainPlayer;
+    internal GameObject[] bots;
+    internal player_manager mainPlayer;
     internal int playerIndexMove;
     
 
@@ -23,9 +29,16 @@ public class match_manager : MonoBehaviour
     
 
    internal CardType currentCardType;
+   internal MoveType currentMoveType;
+   internal int howManyCardsThrowedAtCurrentMove;
+   internal GameObject previousPlayer;
+
+   private moveDeckManager mdm;
+   private bool isGameOver = false;
 
     void Awake()
     {
+        mdm = GameObject.FindGameObjectWithTag("MoveDeck").GetComponent<moveDeckManager>();
         _mainDeckEnv = mainDeck.GetComponent<main_deck>();
         bots = new GameObject[howManyBots];
         _botsPositions = new Transform[howManyBots];
@@ -40,14 +53,16 @@ public class match_manager : MonoBehaviour
         displayDeck.FitCards();
         playerIndexMove = 0; //Random.Range(0, howManyBots); // + 1 - + player
         onCardTypeButtonPressed.CardTypeButtonPressed += endMove;
+        //onCardClick.onCardAdded += IncreaseThrowedCardsAtCurrentMove;
     }
 
     void Update()
     {
-        if (endGameCheck())
+        if (isGameOver)
         {
             // end of the game
             // congrats for the winner
+            Debug.Log("Game is over!");
         }
         else
         {
@@ -64,20 +79,19 @@ public class match_manager : MonoBehaviour
             passMoveToPlayer();
             
         }
+
+        //if (previousPlayer != null && previousPlayer.name == "Player") Debug.Log(previousPlayer.GetComponent<player_manager>().howManyCardsThrowed);
+        //else if (previousPlayer != null) Debug.Log(previousPlayer.GetComponent<bot_manager>().howManyThrowed);
     }
 
-    public class ResultOfTurn
-    {
-        public bool isWin;
-        public bool dropCards;
-    }
 
     void passMoveToPlayer()
     {
-        playerIndexMove = Random.Range(0, howManyBots + 1); // + 1 - + player // CHECK IT
+        //playerIndexMove = Random.Range(0, howManyBots + 1); // + 1 - + player // CHECK IT
         if (playerIndexMove == 0)
         {
             mainPlayer.isMyTurn = true;
+            mainPlayer.turnIndicator.color = Color.green;
         }
         else
         {
@@ -121,35 +135,85 @@ public class match_manager : MonoBehaviour
 
     bool endGameCheck()
     {
-        if (mainPlayer.PlayersDeck.Count == 0)
+        if (previousPlayer)
         {
-            return true;
-        }
-
-        foreach (var bot in bots)
-        {
-            if (bot.GetComponent<bot_manager>().PlayersDeck.Count == 0)
+            bool isPreviousPlayerBot = !previousPlayer.CompareTag("Player");
+            if (isPreviousPlayerBot)
             {
-                return true;
+                if (previousPlayer.GetComponent<bot_manager>().PlayersDeck.Count == 0)
+                    return true;
             }
+            else if(previousPlayer.GetComponent<player_manager>().PlayersDeck.Count == 0)
+                return true;
         }
 
         return false;
     }
 
-    internal void endMove() // mb put result in it
+    public void endMove(bool isLastMoveLie = false, bool cardsWereChecked = false)
+    {
+        if(isGameOver = endGameCheck()) return;
+
+        if (cardsWereChecked)
+        {
+            bool isPreviousPlayerBot = previousPlayer.tag != "Player";
+            bool isCurrentPlayerBot = playerIndexMove != 0;
+
+            if (isLastMoveLie && !isPreviousPlayerBot)
+            {
+                mainPlayer._preparedForMove = false;
+            }
+
+            if (!isLastMoveLie)
+            {
+                if (!isCurrentPlayerBot) mainPlayer.turnIndicator.color = Color.red;
+                ChangeIndexMove();
+            }
+
+            currentMoveType = MoveType.Start;
+            mdm.ResetAddedCardsCount();
+        }
+        else
+        {
+            ChangeIndexMove();
+        }
+
+    }
+
+    public void ChangeIndexMove()
     {
         if (playerIndexMove == 0)
         {
             mainPlayer.isMyTurn = false;
+            mainPlayer.turnIndicator.color = Color.red;
+            previousPlayer = mainPlayer.gameObject;
         }
         else
         {
             bots[playerIndexMove - 1].GetComponent<bot_manager>().isMyTurn = false;
+            previousPlayer = bots[playerIndexMove - 1];
         }
 
-        if (playerIndexMove + 1 < howManyBots)
+        if (playerIndexMove + 1 < howManyBots + 1)
             playerIndexMove++;
         else playerIndexMove = 0;
+
+        if (currentMoveType == MoveType.Start)
+            currentMoveType = MoveType.Ongoing;
+
+        if (playerIndexMove == 0)
+        {
+            mainPlayer._preparedForMove = false;
+        }
+    }
+
+    internal void IncreaseThrowedCardsAtCurrentMove()
+    {
+        howManyCardsThrowedAtCurrentMove++;
+    }
+
+    void ResetThrowedCardsAtMove()
+    {
+        howManyCardsThrowedAtCurrentMove = 0;
     }
 }

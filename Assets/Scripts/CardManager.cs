@@ -14,11 +14,17 @@ public class CardManager : MonoBehaviour
         facedownTexture = Resources.Load<Sprite>("Prefabs/facedown_card");
     }
 
-    void Start()
+    internal void cardAddedToMoveDeck()
     {
+        GetComponent<SpriteRenderer>().sprite = facedownTexture;
     }
 
-    internal void cardAddedToMoveDeck()
+    internal void flipCardToFace()
+    {
+        GetComponent<SpriteRenderer>().sprite = faceupTexture;
+    }
+
+    internal void flipCardToDown()
     {
         GetComponent<SpriteRenderer>().sprite = facedownTexture;
     }

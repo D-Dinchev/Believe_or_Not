@@ -6,18 +6,16 @@ public class onCardClick : MonoBehaviour
     public static event Action onCardAdded;
     private moveDeckManager mdm;
     private player_manager pm;
-    private bool threwedMoreThanTwo = false;
+    internal static bool threwedMoreThanTwo = false;
+    private match_manager mm;
 
     void Awake()
     {
         mdm = GameObject.FindGameObjectWithTag("MoveDeck").GetComponent<moveDeckManager>();
         pm = GameObject.FindGameObjectWithTag("Player").GetComponent<player_manager>();
+        mm = GameObject.FindGameObjectWithTag("MatchManager").GetComponent<match_manager>();
     }
 
-    void Start()
-    {
-        
-    }
 
     void Update()
     {
@@ -31,6 +29,8 @@ public class onCardClick : MonoBehaviour
         if (enabled && !threwedMoreThanTwo && pm.isMyTurn)
         {
             mdm.moveDeck.Add(gameObject);
+            gameObject.transform.parent = mdm.transform;
+            pm.PlayersDeck.Remove(gameObject);
             onCardAdded?.Invoke();
         }
     }

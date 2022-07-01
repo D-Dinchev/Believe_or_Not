@@ -11,6 +11,8 @@ TagManager:
   - MoveDeck
   - MatchManager
   - Canvas
+  - PlayerZonePanel
+  - MainDeck
   layers:
   - Default
   - TransparentFX

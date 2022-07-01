@@ -8,6 +8,7 @@ public class OnMouseOverCard : MonoBehaviour
     float howHigh = 1.5f;
     private bool isAlreadyUp = false;
 
+    void Update(){}
     void OnMouseOver()
     {
         if (!isAlreadyUp && enabled)

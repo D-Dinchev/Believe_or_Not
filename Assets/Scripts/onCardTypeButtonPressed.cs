@@ -7,6 +7,10 @@ using UnityEngine;
 [Serializable]
 public enum CardType
 {
+    Two = 2,
+    Three,
+    Four,
+    Five,
     Six,
     Seven,
     Eight,
@@ -21,21 +25,17 @@ public enum CardType
 
 public class onCardTypeButtonPressed : MonoBehaviour
 {
-    public static event Action CardTypeButtonPressed;
+    public static event Action<bool, bool> CardTypeButtonPressed;
     private match_manager mm;
 
     void Awake()
     {
         mm = GameObject.FindGameObjectWithTag("MatchManager").GetComponent<match_manager>();
     }
-    void Start()
-    {
-        
-    }
 
     public void onButtonPressed(cardDesicionComponent cdc)
     {
         mm.currentCardType = cdc.cardType;
-        CardTypeButtonPressed?.Invoke();
+        CardTypeButtonPressed?.Invoke(false, false);
     }
 }
