@@ -9,7 +9,7 @@
 /[Bb]uilds/
 /[Ll]ogs/z
 /[Mm]emoryCaptures/
-TextMesh*Pro/
+/[Aa]ssets/[Tt]TextMesh*Pro/
 
 # Asset meta data should only be ignored when the corresponding asset is also ignored
 /[Aa]ssets/**/*.meta
