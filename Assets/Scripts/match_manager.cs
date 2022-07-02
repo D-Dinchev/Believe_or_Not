@@ -35,6 +35,7 @@ public class match_manager : MonoBehaviour
 
    private moveDeckManager mdm;
    private bool isGameOver = false;
+   private GameObject _cardTypeField;
 
     void Awake()
     {
@@ -44,16 +45,17 @@ public class match_manager : MonoBehaviour
         _botsPositions = new Transform[howManyBots];
         displayDeck = this.GetComponent<display_deck>();
         mainPlayer = GameObject.FindGameObjectWithTag("Player").GetComponent<player_manager>();
+        _cardTypeField = GameObject.FindGameObjectWithTag("Canvas").transform.GetChild(0).Find("Offered_Card_Type").gameObject;
     }
 
     void Start()
     {
+        currentMoveType = MoveType.Start;
         instantiateBots();
         HandOutCardsToPlayers();
         displayDeck.FitCards();
         playerIndexMove = 0; //Random.Range(0, howManyBots); // + 1 - + player
         onCardTypeButtonPressed.CardTypeButtonPressed += endMove;
-        //onCardClick.onCardAdded += IncreaseThrowedCardsAtCurrentMove;
     }
 
     void Update()
@@ -162,15 +164,27 @@ public class match_manager : MonoBehaviour
             if (isLastMoveLie && !isPreviousPlayerBot)
             {
                 mainPlayer._preparedForMove = false;
+                _cardTypeField.GetComponent<CardTypeChange>().ResetCardType();
             }
-
+            
             if (!isLastMoveLie)
             {
                 if (!isCurrentPlayerBot) mainPlayer.turnIndicator.color = Color.red;
+                _cardTypeField.GetComponent<CardTypeChange>().waitForPlayersInput();
                 ChangeIndexMove();
             }
 
             currentMoveType = MoveType.Start;
+
+            if (playerIndexMove == 0)
+            {
+                _cardTypeField.GetComponent<CardTypeChange>().ResetCardType();
+            }
+            else
+            {
+                _cardTypeField.GetComponent<CardTypeChange>().waitForPlayersInput();
+            }
+
             mdm.ResetAddedCardsCount();
         }
         else

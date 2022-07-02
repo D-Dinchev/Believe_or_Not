@@ -1,12 +1,17 @@
+using System;
 using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using TMPro;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class bot_manager : MonoBehaviour
 {
     public List<GameObject> PlayersDeck;
+    private GameObject LieButton;
+
     internal bool isMyTurn;
     private GameObject Canvas;
     private GameObject botPanelPrefab;
@@ -16,6 +21,7 @@ public class bot_manager : MonoBehaviour
 
     private Coroutine turnRunningCoroutine;
     private bool stopTurnCoroutine = false;
+    
 
     internal int howManyThrowed;
 
@@ -25,6 +31,7 @@ public class bot_manager : MonoBehaviour
         botPanelPrefab = Resources.Load("Prefabs/Bot_Panel") as GameObject;
         mdm = GameObject.FindGameObjectWithTag("MoveDeck").GetComponent<moveDeckManager>();
         mm = GameObject.FindGameObjectWithTag("MatchManager").GetComponent<match_manager>();
+        LieButton = GameObject.FindGameObjectWithTag("Canvas").transform.Find("Lie_Button").gameObject;
     }
 
     void Start()
@@ -42,7 +49,8 @@ public class bot_manager : MonoBehaviour
         if (isMyTurn && turnRunningCoroutine == null)
         {
             botPanel.transform.Find("TurnIndicator").GetComponent<Image>().color = Color.green;
-            turnRunningCoroutine = StartCoroutine(startMove());
+            if (mm.currentMoveType == MoveType.Start) turnRunningCoroutine = StartCoroutine(startMove());
+            else ongoingMove();
         }
         else if (stopTurnCoroutine)
         {
@@ -55,6 +63,14 @@ public class bot_manager : MonoBehaviour
     IEnumerator startMove()
     {
         yield return new WaitForSeconds(Random.Range(3, 5));
+
+        if (mm.currentMoveType == MoveType.Start)
+        {
+            CardType cardType = (CardType) Random.Range(6, 16);
+            mm.currentCardType = cardType;
+            GameObject cardTypeField = Canvas.transform.GetChild(0).Find("Offered_Card_Type").gameObject;
+            cardTypeField.GetComponent<CardTypeChange>().ChangeCardType();
+        }
 
         howManyThrowed =  Random.Range(1, 4);
         if (howManyThrowed > PlayersDeck.Count) howManyThrowed = Random.Range(1, PlayersDeck.Count + 1);
@@ -79,9 +95,22 @@ public class bot_manager : MonoBehaviour
         stopTurnCoroutine = true;
     }
 
-    void ongoingMove()
+    void ongoingMove() // TODO 
     {
+        int moveTypeChance;
+        moveTypeChance = Random.Range(0, 101);
 
+        if (moveTypeChance <= 60)
+        {
+            turnRunningCoroutine = StartCoroutine(LieButton.GetComponent<DontBelieveButton>().DontBelieveCoroutine(() =>
+            {
+                stopTurnCoroutine = true;
+            }));
+        }
+        else
+        {
+            turnRunningCoroutine = StartCoroutine(startMove());
+        }
     }
 
     internal void IncreaseCardsCount()

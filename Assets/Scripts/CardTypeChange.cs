@@ -15,8 +15,18 @@ public class CardTypeChange : MonoBehaviour
         onCardTypeButtonPressed.CardTypeButtonPressed += ChangeCardType;
     }
 
-    void ChangeCardType(bool _ = false, bool __ = false)
+    internal void ChangeCardType(bool _ = false, bool __ = false)
     {
         gameObject.GetComponent<TextMeshProUGUI>().text = mm.currentCardType.ToString();
+    }
+
+    internal void ResetCardType()
+    {
+        gameObject.GetComponent<TextMeshProUGUI>().text = "";
+    }
+
+    internal void waitForPlayersInput()
+    {
+        gameObject.GetComponent<TextMeshProUGUI>().text = "Waiting for player...";
     }
 }

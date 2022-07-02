@@ -2089,7 +2089,7 @@ GameObject:
   - component: {fileID: 1002174069}
   - component: {fileID: 1002174068}
   m_Layer: 5
-  m_Name: Canvas
+  m_Name: Viewport
   m_TagString: Canvas
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3905,6 +3905,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d0141426a2d23cd448ac706e709ed28e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  moveDeck: []
 --- !u!1 &1694318833
 GameObject:
   m_ObjectHideFlags: 0

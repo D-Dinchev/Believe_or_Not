@@ -7,11 +7,7 @@ using UnityEngine;
 [Serializable]
 public enum CardType
 {
-    Two = 2,
-    Three,
-    Four,
-    Five,
-    Six,
+    Six = 6,
     Seven,
     Eight,
     Nine,

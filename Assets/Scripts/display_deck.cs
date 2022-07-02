@@ -22,6 +22,8 @@ public class display_deck : MonoBehaviour
 
         foreach (var card in playerManager.PlayersDeck)
         {
+            card.transform.eulerAngles = new Vector3(0, 0, 0);
+            card.GetComponent<CardManager>().flipCardToFace();
             card.transform.position = HandDeck.transform.position + new Vector3(howManyAdded * gapBetweenCards, 0, 0);
             card.transform.SetParent(HandDeck);
 
@@ -30,5 +32,10 @@ public class display_deck : MonoBehaviour
 
             howManyAdded++;
         }
+    }
+
+    internal void ResetAddedCardsCount()
+    {
+        howManyAdded = 0;
     }
 }
