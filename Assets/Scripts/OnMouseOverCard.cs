@@ -1,12 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Experimental.Rendering;
 
 public class OnMouseOverCard : MonoBehaviour
 {
     float howHigh = 1.5f;
-    private bool isAlreadyUp = false;
+    internal bool isAlreadyUp = false;
 
     void Update(){}
     void OnMouseOver()

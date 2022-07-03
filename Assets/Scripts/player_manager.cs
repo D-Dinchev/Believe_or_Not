@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class player_manager : MonoBehaviour
 {
-    public List<GameObject> PlayersDeck;
+    internal List<GameObject> PlayersDeck;
 
     internal Image turnIndicator;
     internal bool isMyTurn;

@@ -103,6 +103,11 @@ public class DontBelieveButton : MonoBehaviour
                     card.transform.position = _mainDeck.position;
                     mm.previousPlayer.GetComponent<bot_manager>().IncreaseCardsCount();
                 }
+                else
+                {
+                    card.GetComponent<OnMouseOverCard>().enabled = true;
+                    card.GetComponent<onCardClick>().enabled = true;
+                }
             }
 
             if (!isPreviousPlayerBot)
@@ -117,7 +122,7 @@ public class DontBelieveButton : MonoBehaviour
         {
             List<GameObject> currentPlayerDeck;
             if (mm.playerIndexMove == 0) currentPlayerDeck = mm.mainPlayer.PlayersDeck;
-            currentPlayerDeck = mm.bots[mm.playerIndexMove - 1].GetComponent<bot_manager>().PlayersDeck;
+            else currentPlayerDeck = mm.bots[mm.playerIndexMove - 1].GetComponent<bot_manager>().PlayersDeck;
 
             foreach (var card in _moveDeck)
             {

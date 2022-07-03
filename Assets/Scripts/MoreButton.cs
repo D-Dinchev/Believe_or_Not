@@ -20,11 +20,6 @@ public class MoreButton : MonoBehaviour
         onCardClick.onCardAdded += switchButtonInteractToTrue;
     }
 
-    void Update()
-    {
-        
-    }
-
     void switchButtonInteractToTrue()
     {
         if (mm.currentMoveType == MoveType.Ongoing)

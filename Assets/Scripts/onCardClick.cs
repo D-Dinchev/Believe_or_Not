@@ -25,12 +25,12 @@ public class onCardClick : MonoBehaviour
 
     void OnMouseDown()
     {
-
         if (enabled && !threwedMoreThanTwo && pm.isMyTurn)
         {
             mdm.moveDeck.Add(gameObject);
             gameObject.transform.parent = mdm.transform;
             pm.PlayersDeck.Remove(gameObject);
+            GetComponent<OnMouseOverCard>().isAlreadyUp = false;
             onCardAdded?.Invoke();
         }
     }
