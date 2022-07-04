@@ -68,22 +68,8 @@ public class match_manager : MonoBehaviour
         }
         else
         {
-            /*
-             * moveResult = passMoveToPlayer(playerID, startMove\ongoingMove, ResultOfTurn)
-             *
-             * endOfMoveHandler(moveResult);
-             * endOfMoveHandler() {
-             *     if (win) { dropCards/returnToPreviousPlayer; setMoveToThisPlayer;}
-             *     if (lose) { sendCardsToThisPlayer'sDeck; setMoveToNextPlayer; } 
-             * }
-             *
-             */
             passMoveToPlayer();
-            
         }
-
-        //if (previousPlayer != null && previousPlayer.name == "Player") Debug.Log(previousPlayer.GetComponent<player_manager>().howManyCardsThrowed);
-        //else if (previousPlayer != null) Debug.Log(previousPlayer.GetComponent<bot_manager>().howManyThrowed);
     }
 
 
@@ -226,7 +212,7 @@ public class match_manager : MonoBehaviour
         howManyCardsThrowedAtCurrentMove++;
     }
 
-    void ResetThrowedCardsAtMove()
+    private void ResetThrowedCardsAtMove()
     {
         howManyCardsThrowedAtCurrentMove = 0;
     }
